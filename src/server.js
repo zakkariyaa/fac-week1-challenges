@@ -18,7 +18,7 @@ server.get('/', (req, res) => {
     `);
 });
 
-server.get('/colour', bodyParser, (req, res) => {
+server.get('/colour', (req, res) => {
   const hexParam = '#' + req.query.hex || '#ffffff';
 
   res.send(`
@@ -45,6 +45,24 @@ server.get('/colour', bodyParser, (req, res) => {
         </form>
       </body>
     </html>
+    `);
+});
+
+server.get('/cheese', (req, res) => {
+  res.send(`
+      <body>
+        <h1>Cheese Page</h1>
+
+        <form action="/cheese" method="POST">
+            <label for="name">Enter cheese name: </label><br />
+            <input type="text" id="name" name="name"/><br />
+
+            <label for="rating">Choose cheese rating: </label><br />
+            <input type="range" min="0" max="5" id="rating" name="rating"/><br />
+
+            <button type="submit">submit</button>
+        </form>
+      </body>
     `);
 });
 
