@@ -1,6 +1,8 @@
 const express = require('express');
 const server = express();
 
+const bodyParser = express.urlencoded({ extended: true });
+
 server.get('/', (req, res) => {
   res.send(`
     <!doctype html>
@@ -16,8 +18,8 @@ server.get('/', (req, res) => {
     `);
 });
 
-server.get('/colour', (req, res) => {
-  const hexParam = req.query.hex ? '#' + req.query.hex : '#' + 'ffffff';
+server.get('/colour', bodyParser, (req, res) => {
+  const hexParam = '#' + req.query.hex || '#ffffff';
 
   res.send(`
     <!doctype html>
@@ -35,6 +37,12 @@ server.get('/colour', (req, res) => {
       </head>
       <body>
         <h1>Colour Page</h1>
+
+        <form action="/colour" method="GET">
+            <label for="hex">Enter hex colour</label><br />
+            <input type="text" id="hex" name="hex"/><br />
+            <button type="submit">submit</button>
+        </form>
       </body>
     </html>
     `);
