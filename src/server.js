@@ -19,7 +19,7 @@ server.get('/', (req, res) => {
 });
 
 server.get('/colour', (req, res) => {
-  const hexParam = '#' + req.query.hex || '#ffffff';
+  const hexParam = req.query.hex ? '#' + req.query.hex : '#ffffff';
 
   res.send(`
     <!doctype html>
@@ -48,7 +48,13 @@ server.get('/colour', (req, res) => {
     `);
 });
 
+const cheeses = [];
+
 server.get('/cheese', (req, res) => {
+  const cheeseList = cheeses.map((cheese) => {
+    return `<li>${cheese.name} | ${cheese.rating}</li>`;
+  });
+
   res.send(`
       <body>
         <h1>Cheese Page</h1>
@@ -62,8 +68,19 @@ server.get('/cheese', (req, res) => {
 
             <button type="submit">submit</button>
         </form>
+
+        <ul>
+            ${cheeseList.join('')}
+        </ul>
       </body>
     `);
+});
+
+server.post('/cheese', bodyParser, (req, res) => {
+  const cheese = req.body;
+  cheeses.push(cheese);
+
+  res.redirect('/cheese');
 });
 
 module.exports = server;
